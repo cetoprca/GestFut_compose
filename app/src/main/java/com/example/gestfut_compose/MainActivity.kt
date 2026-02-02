@@ -17,8 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.gestfut.data.EquipoProveedor
 import com.example.gestfut.data.Partido
 import com.example.gestfut.data.PartidoProveedor
+import com.example.gestfut_compose.navegacion.miNavHost
 import com.example.gestfut_compose.ui.components.BottomNavItem
 import com.example.gestfut_compose.ui.components.MiTopBar
 import com.example.gestfut_compose.ui.components.mibottombar
@@ -31,6 +34,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         //Cargo los partidos
         PartidoProveedor.inicializar(this)
+        EquipoProveedor.inicializar(this)
         setContent {
             GestFut_composeTheme {
                 Pantalla_principal()
@@ -43,11 +47,14 @@ class MainActivity : ComponentActivity() {
 fun Pantalla_principal()
 {
     var pantalla_actual by remember{ mutableStateOf(BottomNavItem.Calendario) }
+    //Defino el el controlador de navegación que es necesario
+    //para navegar
+    val controlador_navegacion = rememberNavController()
     Scaffold(modifier = Modifier.fillMaxSize().statusBarsPadding(),
         topBar = { MiTopBar() },
-        bottomBar = { mibottombar(pantalla_actual){pantalla_actual=it} }
+        bottomBar = { mibottombar(pantalla_actual,controlador_navegacion){pantalla_actual=it} }
           )    {
-        pantallaCalendario(modificador= Modifier.padding(it), jornadas = listOf("0","1","2","3","4"), selectedJornada = "0",{},partidos= PartidoProveedor.partidos)
+        miNavHost(modificador = Modifier.padding(it),controlador_navegacion)
     } }
 
 

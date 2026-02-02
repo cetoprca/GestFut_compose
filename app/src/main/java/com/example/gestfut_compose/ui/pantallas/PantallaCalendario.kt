@@ -40,9 +40,8 @@ fun pantallaCalendario(modificador: Modifier=Modifier, jornadas: List<String>,
                        partidos: List<Partido>)
 {
     Column(
-        modifier = modificador
+        modifier = Modifier
             .fillMaxSize()
-            .padding(top = 8.dp)
     ) {
         // Fila con el texto "JORNADA" y el ExposedDropdownMenuBox
         Row(
@@ -68,7 +67,7 @@ fun pantallaCalendario(modificador: Modifier=Modifier, jornadas: List<String>,
 
                 TextField(
                     value = selectedJornada,
-                    onValueChange = {},
+                    onValueChange = {onJornadaSelected(it)},
                     readOnly = true,
                     label = { Text("Seleccione") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
