@@ -8,38 +8,41 @@ import kotlinx.serialization.json.Json
 class PartidoProveedor {
     companion object{
 
+        private var appContext: Context? = null
+        private var _partidos: MutableList<Partido>? = null
 
+        fun inicializar(context: Context) {
+            appContext = context.applicationContext
+        }
 
-            private var appContext: Context? = null
-            private var _partidos: MutableList<Partido>? = null
-
-            fun inicializar(context: Context) {
-                appContext = context.applicationContext
+        val partidos: MutableList<Partido>
+            get() {
+                if (_partidos == null) {
+                    _partidos = cargarPartidosDesdeJson()
+                }
+                return _partidos!!
             }
 
-            val partidos: MutableList<Partido>
-                get() {
-                    if (_partidos == null) {
-                        _partidos = cargarPartidosDesdeJson()
-                    }
-                    return _partidos!!
-                }
+        fun editarPartido(indice: Int, partidoNuevo: Partido){
+            _partidos = _partidos?.mapIndexed { index, partido -> if(indice == index) partidoNuevo else partido }?.toMutableList()
+        }
 
-            private fun cargarPartidosDesdeJson(): MutableList<Partido> {
-                return try {
+        private fun cargarPartidosDesdeJson(): MutableList<Partido> {
+            return try {
 
-                    val context = appContext ?: throw IllegalStateException("GestorPartidos no ha sido inicializado.")
-                    val inputStream = context.assets.open("partidos.json")
-                    val jsonString = inputStream.bufferedReader().use { it.readText() }
-                    Log.i("cargarPartidos","valor de json $jsonString")
-                    Json.decodeFromString(jsonString)
-                } catch (e: Exception) {
-                    Log.i("cargarPartidos","error al cargar los partidos ${e.message}")
-                    println("Error al cargar los partidos: ${e.message}")
-                    mutableListOf()
-                }
+                val context = appContext ?: throw IllegalStateException("GestorPartidos no ha sido inicializado.")
+                val inputStream = context.assets.open("partidos.json")
+                val jsonString = inputStream.bufferedReader().use { it.readText() }
+                Log.i("cargarPartidos","valor de json $jsonString")
+                Json.decodeFromString(jsonString)
+            } catch (e: Exception) {
+                Log.i("cargarPartidos","error al cargar los partidos ${e.message}")
+                println("Error al cargar los partidos: ${e.message}")
+                mutableListOf()
             }
         }
     }
+
+}
 
 
