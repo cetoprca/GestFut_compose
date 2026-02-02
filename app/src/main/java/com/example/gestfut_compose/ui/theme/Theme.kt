@@ -33,7 +33,7 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Icons,
 
     secondary = ColorAccent,
-    onSecondary = Color.Black,
+    onSecondary = SecondaryText,
 
     background = PrimaryLight,
     onBackground = PrimaryText,

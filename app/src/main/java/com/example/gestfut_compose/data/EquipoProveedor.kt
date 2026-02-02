@@ -18,12 +18,12 @@ class EquipoProveedor {
         val equipos: MutableList<Equipo>
             get() {
                 if (_equipos == null) {
-                    _equipos = cargarPartidosDesdeJson()
+                    _equipos = cargarEquiposDesdeJson()
                 }
                 return _equipos!!
             }
 
-        private fun cargarPartidosDesdeJson(): MutableList<Equipo> {
+        private fun cargarEquiposDesdeJson(): MutableList<Equipo> {
             return try {
 
                 val context = appContext ?: throw IllegalStateException("GestorEquipos no ha sido inicializado.")
